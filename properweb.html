@@ -16,59 +16,60 @@
         </div>
         <nav>
             <ul>
-                <li><a href="user.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#team">Team</a></li>
             </ul>
         </nav>
         
      </header>
 <!-- -------------------------SIGN IN SIGN UP---------------------------- -->
-<div class="body1">
-<div class="container sign"    id="signin">
-    <h2>Sign In</h2>
-    <form id="signInForm">
-      <div class="input-group">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" required>
+<div class="body1" id="home">
+  <div class="container sign"    id="signin">
+      <h2>Sign In</h2>
+      <form id="signInForm">
+        <div class="input-group">
+          <label for="email">Email:</label>
+          <input type="text" id="email" name="email" required>
+        </div>
+        <div class="input-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <div class="input-group">
+          <input type="submit" value="Sign In" onclick="redirectToUpload()">
+        </div>
+      </form>
+      <div class="bottom-text">
+        Don't have an account? <a href="#" id="showSignUp">Sign Up</a>
       </div>
-      <div class="input-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+    </div>
+  
+    <div class="container sign" style="display: none;" id="signUpContainer">
+      <h2>Sign Up</h2>
+      <form id="signUpForm">
+        <div class="input-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="input-group">
+          <label for="email">Email:</label>
+          <input type="text" id="email" name="email" required>
+        </div>
+        <div class="input-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <div class="input-group">
+          <input type="submit" value="Sign Up" onclick="redirectToUpload()">
+        </div>
+      </form>
+      <div class="bottom-text">
+        Already have an account? <a href="#" id="showSignIn">Sign In</a>
       </div>
-      <div class="input-group">
-        <input type="submit" value="Sign In" onclick="redirectToUpload()">
-      </div>
-    </form>
-    <div class="bottom-text">
-      Don't have an account? <a href="#" id="showSignUp">Sign Up</a>
     </div>
   </div>
-
-  <div class="container sign" style="display: none;" id="signUpContainer">
-    <h2>Sign Up</h2>
-    <form id="signUpForm">
-      <div class="input-group">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-      </div>
-      <div class="input-group">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" required>
-      </div>
-      <div class="input-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-      </div>
-      <div class="input-group">
-        <input type="submit" value="Sign Up" onclick="redirectToUpload()">
-      </div>
-    </form>
-    <div class="bottom-text">
-      Already have an account? <a href="#" id="showSignIn">Sign In</a>
-    </div>
-  </div>
-</div>
-
+  
   <script>
     document.getElementById('showSignUp').addEventListener('click', function(event) {
       event.preventDefault();
@@ -81,23 +82,86 @@
       document.getElementById('signUpContainer').style.display = 'none';
       document.getElementById('signin').style.display = 'block';
     });
+    const signIn = document.getElementById('signInForm')
+    signIn.addEventListener('submit',async function(event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+  
+      fetch('http://localhost:80/signIn', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Sign-in failed');
+        }
+        return response.text();
+      })
+      .then(data => {
+        // Handle successful sign-in
+        console.log(data);
+        localStorage.setItem('userToken', data.token); // Assuming the API returns a token
+        window.location.href = 'uploadimage.html';
+      })
+      .catch(error => {
+        console.error('Sign-in error:', error.message);
+        // Handle error
+        //document.getElementById('error-message').innerText = 'Invalid email or password';
+      });
+    });
+  
+    document.getElementById('signUpForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+  fetch('http://localhost:9090/signUp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, password })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Sign-up failed');
+        }
+        return response.text();
+      })
+      .then(data => {
+        // Handle successful sign-up
+        console.log(data);
+        localStorage.setItem('userToken', data.token); // Assuming the API returns a token
+        window.location.href = 'uploadimage.html';
+      })
+      .catch(error => {
+        console.error('Sign-up error:', error.message);
+        // Handle error
+      });
+    });
     function redirectToUpload(){
-       
-        var username = document.getElementById('username').value;
-      var password = document.getElementById('password').value;
-
-      if (username.trim() === '' || password.trim() === '') {
-        // Display an error message if any field is empty
-        document.getElementById('error-message').innerText = 'Please fill in all fields.';
-      } else {
-        // Simulating user sign-in and storing a token in localStorage
-        localStorage.setItem('userToken', 'someAuthToken');
-        window.location.href = 'uploadimage.html'; // Redirect to home page after signing in
-    }}
+         
+         var email = document.getElementById('email').value;
+       var password = document.getElementById('password').value;
+  if (email.trim() === '' || password.trim() === '') {
+         // Display an error message if any field is empty
+         document.getElementById('error-message').innerText = 'Please fill in all fields.';
+       } else {
+         // Simulating user sign-in and storing a token in localStorage
+         localStorage.setItem('userToken', 'someAuthToken');
+         window.location.href = 'uploadimage1.html'; 
+     }
+  return false;
+  }
   </script>
+
+  
   <!-- ------------------------------XRAY---------------------- -->
-  <div class="hxray1">
-  <header class="hxray">
+  <header class="header2" id="about">
     <h1>X-ray Information</h1>
   </header>
 <div class="xray">
@@ -118,7 +182,7 @@
 
   <section>
     <h2>Common Uses of X-rays</h2>
-    <ul>
+    <ul class="uses">
         <li>Fracture Detection: X-rays are frequently used to assess and diagnose fractures in bones. The images help identify the location and extent of the fracture, guiding the appropriate treatment.</li>
         
         <li>Pulmonary Imaging: Chest X-rays are valuable for examining the lungs and detecting conditions such as pneumonia, lung cancer, and other respiratory issues.</li>
@@ -151,7 +215,7 @@
        </li>
     </ul>
 </section>
-      <section class="sec3">
+      <section>
         <h2>Key Features</h2>
        <ul>
         <li>
@@ -170,28 +234,33 @@
 
       </section>
     </div>
-</div>
 
 
 <!-- --------------------------------ABOUT----------------------------------- -->
 <header class="about">MEET THE TEAM</header>
-<div class="worklist">
+<div class="worklist" id="team">
     <div class="work">
         <img src="Tejas.jpg" alt="">
         <div class="layer">
             <h3>TEJASWI RAI</h3>
-            <p>"baaap ."</p>
-            <a href="" target="_blank"><i class="fa-brands fa-linkedin  link"></i></a>
-            <a href=""></a>
-        </div>
+            <p>I ensure intuitive, visually appealing user interfaces and seamlessly integrate functionality by collaborating with the backend team. Additionally, as a coordinator, I lead the team to meet project deadlines and exceed expectations.</p>
+            
+            <div class="icons">
+            <a href="https://www.linkedin.com/in/tejaswi-rai-b40172255/" target="_blank"><i class="fa-brands fa-linkedin  link"></i></a>
+             <a href="https://github.com/TheTejaswiRai" target="_blank"><i class="fa-brands fa-github git"></i></a>
+            </div>
+            </div>
     </div>
     <div class="work">
         <img src="anush.jpg" alt="">
         <div class="layer">
             <h3>ANUSH SAXENA</h3>
-            <p>"beta"</p>
-            <a href="https://thetejaswirai.github.io/Portfolio"><i class="fa-brands fa-linkedin link"></i></a>
-            <a href=""><i class="fa-brands fa-github git"></i></a>
+            <p>As a backend developer, I thrive on collaborative teamwork to engineer reliable and efficient systems. Working closely with my team, we leverage our collective expertise to tackle complex challenges and deliver high-quality solutions that meet user needs effectively.</p>
+            
+            <div class="icons">
+            <a href=https://www.linkedin.com/in/anush-saxena-582047248 target="_blank"><i class="fa-brands fa-linkedin link"></i></a>
+            <a href=https://github.com/Anush-Saxena target="_blank"><i class="fa-brands fa-github git" target="_blank"></i></a>
+          </div>
         </div>
     </div>
     
@@ -199,22 +268,28 @@
           <img src="mohit.jpeg" alt="">
           <div class="layer">
               <h3>MOHIT </h3>
-              <p>"step beta"</p>
+              <p>As an AI/ML developer, I create algorithms to extract insights from data using cutting-edge techniques, developing intelligent systems to tackle real-world challenges</p>
+              
+              <div class="icons">
               <a href=" https://thetejaswirai.github.io/Basic-Music-Player/" target="_blank"><i class="fa-brands fa-linkedin link"></i></a>
-              <a href=""><i class="fa-brands fa-github git"></i></a>
-          </div>
+              <a href=""><i class="fa-brands fa-github git" target="_blank"></i></a>
+            </div>
+            </div>
       </div>
       <div class="work">
-          <img src="oi.png" alt="">
+          <img src="komal.jpeg" alt="">
           <div class="layer">
               <h3>KOMAL KANWAR</h3>
-              <p>"kon?"</p>
-              <a href="https://thetejaswirai.github.io/Portfolio"><i class="fa-brands fa-linkedin link"></i></a>
-              <a href=""><i class="fa-brands fa-github git"></i></a>
-          </div>
+              <p>As a frontend developer in a support role, I provide technical assistance to users, ensuring seamless navigation and functionality across web interfaces.</p>
+
+              <div class="icons">
+              <a href=https://www.linkedin.com/in/komal-kanwar-676a6924a target="_blank"><i class="fa-brands fa-linkedin link"></i></a>
+              <a href=https://github.com/kanwarkomal target="_blank"><i class="fa-brands fa-github git "></i></a>
+            </div>
+            </div>
       </div>
 </div>
 
-
+<footer><p>©CREATED BY TEAM ALGOWIZ</p></footer>
 </body>
 </html>

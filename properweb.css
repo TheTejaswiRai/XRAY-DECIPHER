@@ -26,17 +26,37 @@ nav ul {
     display: flex;
 }
 
-nav ul li {
-    margin-right: 70px;
+nav ul li{
+  display: inline-block;
+  list-style-type: none;
+  margin: 10px 20px;
+  justify-content: space-between;
+
 }
-
-nav a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
+nav ul li a{
+  text-decoration: none;
+  color: #fff;
+font-size: 20px;
+position: relative;}
+nav ul li a::after{
+  content :'';
+  width: 0px;
+  height: 3px;
+  background:#fff;
+  position: absolute;
+  left: 0px;
+  bottom: -6px;
+  
+  transition: 0.5s;
+  
+  }
+  nav ul li a:hover::after{
+    width:100%;
+    
 }
-
-
+nav ul li a:hover{
+    text-shadow: 2px 3px 8px;
+}
 /* ----------------------------SIGN IN SIGN UP-------------------------------- */
 .body1 {
     height: 70vh;
@@ -120,45 +140,45 @@ nav a {
   
   
  
-  .hxray1 h2{
-    margin-left: 0px;
-  }
-h2{
-    margin-left: 2px;
-}
- .hxray{  
-    padding: 20px;
-    background-color: #115871;
+  .header2{
+    background-color: #043052;
     color: #fff;
-    height: 20px;
-    /* display: flex;
+    display: flex;
     justify-content: center;
-    align-items: center; */
-  }
+    align-items: center;
+    padding: 10px 20px;
+    height: 40px;
 
-  section {
-    margin-bottom: 20px;
-    margin-left: 50px;
-    margin-left: 50px;
   }
-
-  h2 {
-    color: #115871;
-    margin-left: 0px;
+   h2{
+    text-align: left;
+    margin-left: 10px;
+    color: #043052;
   }
-
-  p {
+ p{
+  margin-left: 10px;
     line-height: 1.6;
-  }
-.li{
-  margin: 0px;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+ }
+ section {
+
+  margin-bottom: 20px;
+  margin-left: 50px;
+  margin-left: 50px;
 }
-  footer {
+.uses{
+
+  line-height: 1.6;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+}
+  /* footer {
     text-align: center;
     padding: 10px;
     background-color: #115871;
     color: #fff;
-  }
+  } */
 li h2, li p {
   margin: 0;
   padding: 0;
@@ -169,7 +189,6 @@ li{
 li::before{
   color: #115871;
 }
-  
 
   /* ----------------------------ABOUT--------------------------------- */
   
@@ -200,7 +219,7 @@ li::before{
 .layer{
     width: 85.5%;
     height: 0%;
-    background: linear-gradient(rgba(0,0,0,0.6), #5b9ca7);
+    background: linear-gradient(rgba(0,0,0,0.6), #022F40);
     border-radius: 0px;
     position: absolute;
     left: 0;
@@ -238,7 +257,7 @@ li::before{
 .work img{
     width: 80%;
     border-radius: 20px;
-    display: flex;
+    display: block;
     transition: transform 0.5s;
     
 }
@@ -247,16 +266,36 @@ li::before{
     overflow: hidden;
 }
 /* Style for the GitHub icon */
-.git {
+
+.icons a{
+  display: inline-block;
     color: #333; /* Change the color of the icon */
     font-size: 24px; /* Adjust the size of the icon */
     text-decoration: none; /* Remove default underline */
     border: none;
-    text-wrap: nowrap;
+    
+  }
+  .icons a:hover{
+    color: #5AB1BB;
   }
   
-  /* Style for the GitHub icon hover effect */
-  .git:hover {
-    color: #6cc644; /* Change the color on hover */
+
+  h3{
+    color: #fff;
   }
-  
+  .worklist p{
+    color: #f7f6f6;
+  }
+ footer{
+  background-color: #043052;
+  margin-top: 30px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    height: 10px;
+ } 
+ footer p{
+  margin-left: 565px;
+ }
